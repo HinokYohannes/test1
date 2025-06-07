@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habesha History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(139, 69, 19, 0.1) 35px, rgba(139, 69, 19, 0.1) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(160, 82, 45, 0.1) 35px, rgba(160, 82, 45, 0.1) 70px);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: #F5DEB3;
+            font-size: 1.1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hamburger {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #F5DEB3;
+            margin: 4px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Logo */
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23CD853F"/><text x="50" y="55" text-anchor="middle" fill="%23FFFFFF" font-size="12" font-weight="bold">HABESHA</text><text x="50" y="70" text-anchor="middle" fill="%23FFFFFF" font-size="8">HISTORY</text></svg>') center/cover;
+            border-radius: 50%;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 4px solid #F5DEB3;
+        }
+
+        /* Main Title */
+        .main-title {
+            font-size: 3rem;
+            color: #F5DEB3;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* Introduction */
+        .intro {
+            max-width: 800px;
+            font-size: 1.2rem;
+            color: #F5DEB3;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            padding: 0 1rem;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 24px;
+            background: rgba(245, 222, 179, 0.1);
+            border: 2px solid #F5DEB3;
+            border-radius: 30px;
+            color: #F5DEB3;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .social-btn:hover {
+            background: rgba(245, 222, 179, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Articles Slideshow */
+        .articles-section {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .slideshow-container {
+            position: relative;
+            background: rgba(245, 222, 179, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 222, 179, 0.3);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .slideshow-title {
+            font-size: 2rem;
+            color: #F5DEB3;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slides-wrapper {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.8), rgba(160, 82, 45, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide:hover {
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        .slide-title {
+            font-size: 1.8rem;
+            color: #F5DEB3;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .slide-excerpt {
+            font-size: 1.1rem;
+            color: #F5DEB3;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* Navigation Dots */
+        .dots-container {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: rgba(245, 222, 179, 0.4);
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active, .dot:hover {
+            background-color: #F5DEB3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .intro {
+                font-size: 1rem;
+                padding: 0 0.5rem;
+            }
+            
+            .social-buttons {
+                gap: 1rem;
+            }
+            
+            .social-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .slideshow-container {
+                padding: 1rem;
+            }
+            
+            .slide-title {
+                font-size: 1.4rem;
+            }
+            
+            .slide-excerpt {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-btn {
+                width: 200px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="header">
+            ሓበሻ<br>
+            HABESHA<br>
+            ታሪክ
+        </div>
+
+        <!-- Logo -->
+        <div class="logo"></div>
+
+        <!-- Main Title -->
+        <h1 class="main-title">HABESHA HISTORY</h1>
+
+        <!-- Introduction -->
+        <p class="intro">
+            Welcome to Habesha History, where we delve into the rich history of the Habesha people—encompassing the Amharas, Argobbas, Kebessas, Gurages, Hararis, Tigrayans, and Tigres. From the emergence of the Kingdom of DʿMT to the era of Zemene Mesafint and beyond, we explore the history of the region one chapter at a time.
+        </p>
+
+        <!-- Social Media Buttons -->
+        <div class="social-buttons">
+            <a href="#" class="social-btn">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M23.32 4.71c-.86.38-1.78.64-2.75.76 1-.6 1.76-1.55 2.12-2.68-.93.55-1.96.95-3.06 1.17-.88-.94-2.13-1.53-3.51-1.53-2.66 0-4.81 2.16-4.81 4.81 0 .38.04.75.13 1.1-4-.2-7.57-2.12-9.95-5.04-.42.72-.66 1.55-.66 2.44 0 1.67.85 3.14 2.14 4-.79-.02-1.53-.24-2.18-.6v.06c0 2.33 1.66 4.28 3.86 4.72-.4.11-.83.17-1.27.17-.31 0-.62-.03-.92-.08.62 1.94 2.42 3.35 4.56 3.39-1.67 1.31-3.78 2.09-6.07 2.09-.39 0-.78-.02-1.17-.07 2.18 1.4 4.77 2.21 7.55 2.21 9.06 0 14.01-7.5 14.01-14.01 0-.21 0-.42-.01-.63.96-.69 1.8-1.56 2.46-2.55l-.05-.02z"/>
+                </svg>
+                Substack
+            </a>
+            <a href="#" class="social-btn">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                </svg>
+                TikTok
+            </a>
+            <a href="#" class="social-btn">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-0.897 4.85-2.522 6.05-.625.462-1.38.742-2.237.742-.107 0-.218-.011-.33-.033l-.662.159c-.295.073-.583.11-.868.11-1.704 0-3.188-.877-4.156-2.197-.121-.165-.249-.352-.376-.555-.254-.408-.466-.84-.612-1.29-.03-.092-.05-.187-.068-.284l-.05-.283c-.03-.188-.05-.38-.062-.578a4.993 4.993 0 0 1-.037-.564c0-1.531.282-2.959.785-4.218.24-.598.554-1.159.926-1.671.186-.256.394-.498.621-.722.051-.051.104-.1.159-.148a2.909 2.909 0 0 1 .643-.409c.128-.061.261-.118.397-.167.631-.226 1.31-.345 2.016-.345z"/>
+                </svg>
+                Reddit
+            </a>
+            <a href="#" class="social-btn">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                YouTube
+            </a>
+        </div>
+
+        <!-- Latest Articles Slideshow -->
+        <div class="articles-section">
+            <div class="slideshow-container">
+                <h2 class="slideshow-title">Latest Articles</h2>
+                
+                <div class="slides-wrapper">
+                    <div class="slide active" data-article="1">
+                        <h3 class="slide-title">The Kingdom of DʿMT: Origins of Ethiopian Civilization</h3>
+                        <p class="slide-excerpt">Explore the ancient kingdom that laid the foundations for Ethiopian civilization, from its mysterious origins to its lasting influence on the Horn of Africa.</p>
+                    </div>
+                    
+                    <div class="slide" data-article="2">
+                        <h3 class="slide-title">Zemene Mesafint: The Era of Princes</h3>
+                        <p class="slide-excerpt">Delve into the tumultuous period of Ethiopian history when regional lords battled for supremacy and the central authority weakened.</p>
+                    </div>
+                    
+                    <div class="slide" data-article="3">
+                        <h3 class="slide-title">The Habesha Identity: Unity in Diversity</h3>
+                        <p class="slide-excerpt">Understanding the complex ethnic and cultural tapestry that defines the Habesha people across different regions and communities.</p>
+                    </div>
+                </div>
+                
+                <div class="dots-container">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = (n + slides.length) % slides.length;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // Auto-advance slides
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 4000);
+        
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Click on slides to view article
+        slides.forEach((slide, index) => {
+            slide.addEventListener('click', () => {
+                alert(`Opening article ${index + 1}: ${slide.querySelector('.slide-title').textContent}`);
+                // In WordPress, this would redirect to the actual article
+            });
+        });
+        
+        // Hamburger menu functionality
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            alert('Menu would open here in WordPress implementation');
+        });
+    </script>
+</body>
+</html>
